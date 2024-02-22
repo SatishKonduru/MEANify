@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 
 const categorySchema = new mongoose.Schema({
    id: String,
-   name: String,
-   color: String,
-   icon: String,
-   image: String
+   name: {type: String, required: true},
+   color: {type: String},
+   icon: {type: String},
+   image: {type: String, default: ''}
 });
 
 const Category = mongoose.model('Category', categorySchema,'categories');

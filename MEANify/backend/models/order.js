@@ -7,19 +7,19 @@ const orderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'OrderItem' 
     }],
-    shippingAddress1: String,
-    shippingAddress2: String,
-    city: String,
-    zip: String,
-    country: String,
-    phone: String,
-    status: String,
-    totalPrice: Number,
+    shippingAddress1: {type: String, defualt: ''},
+    shippingAddress2:{type: String, defualt: ''},
+    city: {type: String, defualt: ''},
+    zip: {type: String, defualt: ''},
+    country: {type: String, defualt: ''},
+    phone: {type: String, defualt: ''},
+    status:{type: String, defualt: ''},
+    totalPrice: {type: Number, defualt: 0},
     user: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User' 
         },
-    dateOrdered: Date
+    dateOrdered: {type: Date, defualt: Date.now},
 });
 
 const Orders = mongoose.model('Orders', orderSchema,'orders');
