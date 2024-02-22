@@ -22,7 +22,6 @@ router.post(`/`, (req, res) => {
 
 })
 
-//get
 
 router.get(`/`, async(req, res) => {
     const productList = await Product.find();
