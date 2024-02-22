@@ -5,6 +5,9 @@ const bodyParser =  require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const productRoute = require('./routes/products')
+const userRoute = require('./routes/users')
+const orderRoute = require('./routes/orders')
+const categoryRoute = require('./routes/categories')
 
 const PORT = process.env.PORT
 const api = process.env.API_URL
@@ -15,7 +18,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(morgan('tiny'))
 app.use(cors())
-
+app.options('*', cors())
 
 mongoose.connect(process.env.CONNECTION_STRING, {dbName: process.env.DB_NAME}).then(() => {
     console.log("Database Connected")
@@ -37,4 +40,6 @@ app.get('/', (req, res) => {
 
 
 app.use(`${api}/products`, productRoute)
-
+app.use(`${api}/users`, userRoute)
+app.use(`${api}/orders`, orderRoute)
+app.use(`${api}/categories`, categoryRoute)
