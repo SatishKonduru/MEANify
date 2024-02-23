@@ -8,17 +8,23 @@ const productRoute = require('./routes/products')
 const userRoute = require('./routes/users')
 const orderRoute = require('./routes/orders')
 const categoryRoute = require('./routes/categories')
+const AuthJwt = require('./helpers/jwt')
+const errorHandler = require('./helpers/error-handler')
 
 const PORT = process.env.PORT
 const api = process.env.API_URL
 const app =  express()
 
-// app.use(express.json() )
+app.use(express.json() )
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(morgan('tiny'))
 app.use(cors())
 app.options('*', cors())
+app.use(AuthJwt())
+app.use(errorHandler)
+
+
 
 mongoose.connect(process.env.CONNECTION_STRING, {dbName: process.env.DB_NAME}).then(() => {
     console.log("Database Connected")
