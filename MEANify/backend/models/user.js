@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
    city: {type: String, default: ''},
    zip: {type: String, default: ''},
    country: {type: String, default: ''},
-   phone: {type: String, default: ''},
+   phone: {type: String, required: true},
    isAdmin: {type: Boolean, default: false}
 });
 userSchema.virtual('id').get(function () {return this._id.toHexString()})
