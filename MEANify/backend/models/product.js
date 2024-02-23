@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const { Category } = require('./category')
 
 const productSchema = new mongoose.Schema({
-    id: String,
     name: {type: String, required: true},
     description: {type: String, required: true},
     richDescription: {type: String, default: ''},
@@ -20,5 +19,8 @@ const productSchema = new mongoose.Schema({
     dateCreated: {type: Date, default: Date.now}
 
 })
+
+productSchema.virtual('id').get(function () {return this._id.toHexString()})
+productSchema.set('toJSON', {virtuals: true})
 const Product = mongoose.model('Product', productSchema,'products')
 module.exports =  { Product : Product}  ;

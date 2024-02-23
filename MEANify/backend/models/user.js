@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-   id: String,
+  
    name: {type: String, required: true},
    email: {type: String, required: true},
    passwordHash: {type: String, required: true},
@@ -13,7 +13,8 @@ const userSchema = new mongoose.Schema({
    phone: {type: String, default: ''},
    isAdmin: {type: Boolean, default: false}
 });
-
+userSchema.virtual('id').get(function () {return this._id.toHexString()})
+userSchema.set('toJSON', {virtuals: true})
 const User = mongoose.model('User', userSchema,'users');
 
 module.exports = { User : User };

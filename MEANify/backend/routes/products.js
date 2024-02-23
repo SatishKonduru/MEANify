@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const  { Product } = require('../models/product')
 const mongoose = require('mongoose')
+const product = require('../models/product')
 
 router.post(`/`, async(req, res) => {
     const data = req.body
@@ -34,18 +35,19 @@ router.post(`/`, async(req, res) => {
 })
 
 
-router.get(`/`, async(req, res) => {
-    const productList = await Product.find().select('name description price -_id');
-    if(!productList){
-        res.status(500).json({
-            message: 'No Products were found.',
-            success: false
-        })
-    }
-    else
-       res.status(200).send(productList)
+// router.get(`/`, async(req, res) => {
+//     // const productList = await Product.find().select('name description price -_id');
+//     const productList = await Product.find()
+//     if(!productList){
+//         res.status(500).json({
+//             message: 'No Products were found.',
+//             success: false
+//         })
+//     }
+//     else
+//        res.status(200).send(productList)
     
-})
+// })
 
 
 router.get(`/:id`, async (req, res) => {
@@ -103,5 +105,65 @@ router.delete(`/:id`, async (req, res) => {
     }
 })
 
+
+router.get(`/get/count`, async (req, res) => {
+    const productCount = await Product.countDocuments()
+    if(!productCount){
+        res.status(400).json({
+            message: 'No Products were found',
+            success: false
+        })
+    }
+    else{
+        res.status(200).send({
+            totalCount: productCount
+        })
+    }
+})
+
+router.get(`/get/featured`, async (req, res) => {
+    featuredProducts = await Product.find({isFeatured: true})
+    if(!featuredProducts){
+        res.status(401).json({
+            message: "No Featured Products were Found",
+            success: false
+        })
+    }
+    else{
+        res.status(200).send(featuredProducts)
+    }
+})
+
+router.get(`/get/featured/:count`, async (req, res) => {
+    const number = req.params.count ? req.params.count : 0
+    featuredProducts = await Product.find({isFeatured: true}).limit(+number)
+    if(!featuredProducts){
+        res.status(401).json({
+            message: "No Featured Products were Found",
+            success: false
+        })
+    }
+    else{
+        res.status(200).send(featuredProducts)
+    }
+})
+
+router.get(`/`, async (req, res) => {
+    const categories = req.query.category
+    let filter = {}
+    if(categories){
+        filter = {category: categories.split(',')}
+    }
+    const productsByCategory = await Product.find(filter)
+    if(productsByCategory.length <= 0){
+        res.status(400).send({
+            message: 'No Products were found under given Category',
+            success: false
+        })
+    }
+    else{
+        res.status(200).send(productsByCategory)
+    }
+})
 
 module.exports = router

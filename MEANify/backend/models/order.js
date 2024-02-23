@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const {User} = require('./user')
 const {OrderItem} = require('./orderItem')
 const orderSchema = new mongoose.Schema({
-   id: String,
+   
    orderItems: [{ 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'OrderItem' 
@@ -21,7 +21,8 @@ const orderSchema = new mongoose.Schema({
         },
     dateOrdered: {type: Date, defualt: Date.now},
 });
-
+orderSchema.virtual('id').get(function () {return this._id.toHexString()})
+orderSchema.set('toJSON', {virtuals: true})
 const Orders = mongoose.model('Orders', orderSchema,'orders');
 
 module.exports = { Orders : Orders };
