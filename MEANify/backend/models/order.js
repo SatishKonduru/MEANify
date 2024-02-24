@@ -5,7 +5,8 @@ const orderSchema = new mongoose.Schema({
    
    orderItems: [{ 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'OrderItem' 
+    ref: 'OrderItem',
+    required: true
     }],
     shippingAddress1: {type: String, defualt: ''},
     shippingAddress2:{type: String, defualt: ''},
@@ -13,7 +14,7 @@ const orderSchema = new mongoose.Schema({
     zip: {type: String, defualt: ''},
     country: {type: String, defualt: ''},
     phone: {type: String, defualt: ''},
-    status:{type: String, defualt: ''},
+    status:{type: String,  defualt: 'Pending'},
     totalPrice: {type: Number, defualt: 0},
     user: { 
         type: mongoose.Schema.Types.ObjectId, 

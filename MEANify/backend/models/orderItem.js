@@ -6,7 +6,7 @@ const orderItemSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Product' 
     },
-    quantity: Number
+    quantity: { type: Number, default: 0}
 });
 orderItemSchema.virtual('id').get(function () {return this._id.toHexString()})
 orderItemSchema.set('toJSON', {virtuals: true})

@@ -5,6 +5,8 @@ const mongoose = require('mongoose')
 const product = require('../models/product')
 const authenticateToken = require('../helpers/authentication')
 const checkRole = require('../helpers/checkRole')
+
+
 router.post(`/`, async(req, res) => {
     const data = req.body
     const product = new Product({
