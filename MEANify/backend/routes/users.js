@@ -113,4 +113,63 @@ router.post(`/login`, async (req, res) => {
    
 })
 
+router.get(`/get/count`, async (req, res) => {
+    const usersCount = await User.countDocuments()
+    if(!usersCount){
+        res.status(400).json({
+            message: 'No Users were found',
+            success: false
+        })
+    }
+    else{
+        res.status(200).send({
+            totalCount: usersCount
+        })
+    }
+})
+
+
+router.delete(`/:id`, async (req, res) => {
+    const id = req.params.id
+    deletedUser = await User.findByIdAndDelete(id)
+    if(!deletedUser){
+        res.status(400).json({
+            message: 'No User was found',
+            success: false
+
+        })
+    }
+    else{
+        res.status(200).json({
+            message: 'User Deleted Succesfully',
+            success: true
+        })
+    }
+})
+
+router.patch(`/:id`, async (req, res) => {
+    const id = req.params.id
+    const data = req.body
+    if(!mongoose.isValidObjectId(id)){
+        return res.status(400).json({
+            message: 'Invalid Object Id'
+        })
+    }
+    updatedUser = await User.findByIdAndUpdate(id, { 
+        name : data.name,
+        phone: data.phone
+    }, {new: true})
+    if(!updatedUser){
+        res.status(401).json({
+            message: 'Invalid User Selection',
+            success: false
+        })
+    }
+    else{
+        res.status(200).json({
+            message: 'User Updated Successfully',
+            success: true
+        })
+    }
+})
 module.exports = router
