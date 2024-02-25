@@ -3,17 +3,48 @@ const router = express.Router()
 const  { Product } = require('../models/product')
 const mongoose = require('mongoose')
 const product = require('../models/product')
-const authenticateToken = require('../helpers/authentication')
-const checkRole = require('../helpers/checkRole')
+const multer = require('multer')
+const { Category } = require('../models/category')
 
 
-router.post(`/`, async(req, res) => {
+const FILE_TYPE_MAP = {
+    'image/png' : 'png',
+    'image/jpeg' : 'jpeg',
+    'image/jpg' : 'jpg'
+}
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const isValid = FILE_TYPE_MAP[file.mimetype]
+        let uploadError = new Error('Invalid Image Type')
+        if(isValid){
+            uploadError = null
+        }
+      cb(uploadError , 'public/uploads')
+    },
+    filename: function (req, file, cb) { 
+    //   const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      const fileName = file.originalname.split(' ').join('-')
+      const extension = FILE_TYPE_MAP[file.mimetype]
+      cb(null, `${fileName}-${Date.now()}.${extension}`)
+    }
+  })
+  
+ const uploadOptions = multer({ storage: storage })
+
+router.post(`/`, uploadOptions.single('image') ,async(req, res) => {
     const data = req.body
+    const file = req.file
+    if(!file){
+        return res.status(400).send('No Image was found in Request')
+    }
+    const fileName = req.file.filename
+    const basePath = `${req.protocol}://${req.get('host')}/public/uploads/` 
+    // basePath = http://localhost:3000/public/upload
     const product = new Product({
     name: data.name,
     description: data.description,
     richDescription: data.richDescription,
-    image: data.image,
+    image: `${basePath}${fileName}`,
     brand: data.brand,
     price: data.price, 
     category: data.category,
@@ -31,7 +62,8 @@ router.post(`/`, async(req, res) => {
     else{
         res.status(200).json({
             message: "Product Saved Successfully",
-            success: true
+            success: true,
+            newProduct: savedProduct
         })
     }      
 
@@ -75,7 +107,25 @@ router.patch(`/:id`, async (req, res) => {
             message: 'Invalid Object Id'
         })
     }
-    updatedProduct = await Product.findByIdAndUpdate(id, { name : data.name}, {new: true})
+
+    const category = await Category.findById(data.category)
+    if(!category) return res.status(400).send("Invalid Category")
+
+    const product  =  await Product.findById(id)
+    if(!product) return res.status(400).send('Invalid Product')
+
+    const file = req.file
+    let imagePath;
+    if(file){
+        const fileName = req.file.filename
+        const basePath = `${req.protocol}://${req.get('host')}/public/uploads/` 
+        imagePath = `${basePath}${fileName}`
+    }
+    else{
+        imagePath = product.image
+    }
+
+    updatedProduct = await Product.findByIdAndUpdate(id, { image : imagePath}, {new: true})
     if(!updatedProduct){
         res.status(401).json({
             message: 'Invalid Product Selection',
@@ -167,6 +217,45 @@ router.get(`/`, async (req, res) => {
     else{
         res.status(200).send(productsByCategory)
     }
+})
+
+router.patch(`/gallery-images/:id`, uploadOptions.array('images', 10), async (req, res) =>{
+    const id= req.params.id
+    if(!mongoose.isValidObjectId(id)){
+        return res.status(400).json({
+            message: 'Invalid Object Id'
+        })
+    }
+    
+    const product  =  await Product.findById(id)
+    if(!product) return res.status(400).send('Invalid Product')
+
+    let imagePaths=[];
+    const files = req.files
+  
+    const basePath = `${req.protocol}://${req.get('host')}/public/uploads/` 
+    if(files){
+        files.map(file => {
+            imagePaths.push(`${basePath}${file.filename}`)
+        })
+    }
+    
+
+    updatedProduct = await Product.findByIdAndUpdate(id, { images : imagePaths}, {new: true})
+    if(!updatedProduct){
+        res.status(401).json({
+            message: 'Invalid Product Selection',
+            success: false
+        })
+    }
+    else{
+        res.status(200).send({
+            message: 'Product Updated Successfully with Image Gallery. ',
+            success: true,
+            updatedProduct: updatedProduct
+        })
+    }
+
 })
 
 module.exports = router

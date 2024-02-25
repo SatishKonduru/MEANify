@@ -24,7 +24,7 @@ app.options('*', cors())
 app.use(AuthJwt())
 app.use(errorHandler)
 
-
+app.use('/public/uploads', express.static(__dirname+'/public/uploads'))
 
 mongoose.connect(process.env.CONNECTION_STRING, {dbName: process.env.DB_NAME}).then(() => {
     console.log("Database Connected")
