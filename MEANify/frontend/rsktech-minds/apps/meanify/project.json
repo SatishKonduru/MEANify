@@ -1,0 +1,66 @@
+{
+  "name": "meanify",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "rsktech-minds",
+  "sourceRoot": "apps/meanify/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/meanify",
+        "index": "apps/meanify/src/index.html",
+        "browser": "apps/meanify/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/meanify/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/meanify/src/favicon.ico", "apps/meanify/src/assets"],
+        "styles": ["apps/meanify/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "meanify:build:production"
+        },
+        "development": {
+          "buildTarget": "meanify:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "meanify:build"
+      }
+    }
+  }
+}
