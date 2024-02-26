@@ -8,6 +8,8 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ProductListComponent } from './pages/product-list/product-list.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { UiModule } from '@rskteck-minds/ui';
+
 
 @NgModule({
   declarations: [
@@ -16,9 +18,14 @@ import { FooterComponent } from './shared/footer/footer.component';
     HomePageComponent,
     ProductListComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    
   ],
-  imports: [BrowserModule, RouterModule.forRoot(appRoutes)],
+  imports: [
+    BrowserModule, 
+    RouterModule.forRoot(appRoutes),
+    UiModule
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
