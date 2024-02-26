@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'rskteck-minds-header',
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  selector: 'meanify-header',
+  templateUrl: './header.component.html'
 })
 export class HeaderComponent {
   constructor(){}

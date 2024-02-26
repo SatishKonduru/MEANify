@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'rskteck-minds-footer',
-  templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
+  selector: 'meanify-footer',
+  templateUrl: './footer.component.html'
 })
 export class FooterComponent {
 

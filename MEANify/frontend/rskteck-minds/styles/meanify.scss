@@ -1,0 +1,16 @@
+// Base
+@import './base/colors.scss';
+@import './base/fonts.scss';
+@import './base/mixins.scss'; 
+@import './base/configuration.scss';
+
+// Pages
+@import './apps/meanify/pages/home-page.scss';
+@import './apps/meanify/pages/products-list-page.scss';
+
+// Shared
+@import './apps/meanify/shared/header.scss';
+@import './apps/meanify/shared/footer.scss';
+
+// Libs
+@import './libs/ui/ui.scss'
