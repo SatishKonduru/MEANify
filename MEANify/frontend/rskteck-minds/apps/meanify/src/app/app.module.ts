@@ -9,6 +9,10 @@ import { ProductListComponent } from './pages/product-list/product-list.componen
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { UiModule } from '@rskteck-minds/ui';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { PrimeNgModule } from './modules/prime-ng/prime-ng.module';
+import { AnguarMaterialModule } from './modules/anguar-material/anguar-material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -24,7 +28,11 @@ import { UiModule } from '@rskteck-minds/ui';
   imports: [
     BrowserModule, 
     RouterModule.forRoot(appRoutes),
-    UiModule
+    BrowserAnimationsModule,
+    UiModule,
+    PrimeNgModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
