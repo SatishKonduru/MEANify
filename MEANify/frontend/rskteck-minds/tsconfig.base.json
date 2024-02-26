@@ -14,7 +14,12 @@
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
-        "paths": {}
+        "paths": {
+            "@rskteck-minds/orders": ["orders/src/index.ts"],
+            "@rskteck-minds/products": ["products/src/index.ts"],
+            "@rskteck-minds/ui": ["ui/src/index.ts"],
+            "@rskteck-minds/users": ["users/src/index.ts"]
+        }
     },
     "exclude": ["node_modules", "tmp"]
 }
