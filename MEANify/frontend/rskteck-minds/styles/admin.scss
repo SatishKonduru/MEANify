@@ -1,6 +1,16 @@
+
 // Base
 @import './base/colors.scss';
 @import './base/fonts.scss';
 @import './base/mixins.scss'; 
 @import './base/configuration.scss';
 
+// Libs
+@import './libs/ui/ui.scss';
+
+//Pages
+@import '../styles/apps/admin/pages/dashboard-page.scss';
+
+//Shared
+@import '../styles/apps/admin/shared/shell.scss';
+@import '../styles/apps/admin/shared/sidebar.scss';
